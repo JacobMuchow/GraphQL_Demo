@@ -1,0 +1,8 @@
+{
+  "name": "GraphQL Demo",
+  "description": "A demo GraphQL API using Node.js",
+  "repository": "https://github.com/JacobMuchow/GraphQL_Demo",
+  "logo": "http://node-js-sample.herokuapp.com/node.svg",
+  "keywords": ["node", "express", "GraphQL"],
+  "image": "heroku/nodejs"
+}
