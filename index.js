@@ -15,7 +15,7 @@ var root = {
 };
 
 var app = express();
-app.set('port', (4000));
+app.set('port', (process.env.PORT || 4000));
 
 //app.use(express.static(__dirname + '/public'));
 
