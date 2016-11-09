@@ -1,5 +1,5 @@
 var express = require('express');
-var graphqlHTTP = require('express-graphql');
+var graphqlExp = require('express-graphql');
 var { buildSchema } = require('graphql');
 
 var schema = buildSchema(`
@@ -27,7 +27,7 @@ app.get('/', function(request, response) {
   response.render('index');
 });
 
-app.get('/graphql', graphqlHTTP({
+app.all('/graphql', graphqlExp({
     schema: schema,
     rootValue: root,
     graphiql: true
