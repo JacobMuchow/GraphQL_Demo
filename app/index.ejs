@@ -18,7 +18,7 @@
                     var events = data.events;
 
                     for (var i = 0; i < events.length; i++) {
-                        var eventUrl = "/event?event=" + JSON.stringify(events[i]);
+                        var eventUrl = "/views/event_card?event=" + JSON.stringify(events[i]);
 
                         $.get(eventUrl).then(function(response) {
                             $("#content").append(response);
