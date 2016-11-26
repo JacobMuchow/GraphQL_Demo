@@ -56,7 +56,7 @@ let QueryType = new GraphQLObjectType({
                         pool.query('SELECT * FROM event', function(err, result) {
                             //TODO: handle error
                             resolve(result.rows);
-                        })
+                        });
                     });
                 }
             }
