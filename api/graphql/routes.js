@@ -1,6 +1,17 @@
 var pg = require('pg');
 var graphqlExp = require('express-graphql');
 
+var pool = new pg.Pool({
+    host: process.env.DATABASE_URL,
+    database: 'rootsnblues',
+    max: 10,
+    idleTimeoutMillis: 1000
+});
+
+pool.on('error', function(err, client) {
+    console.log(err);
+});
+
 var {
   graphql,
   GraphQLID,
@@ -13,31 +24,21 @@ var {
   GraphQLSchema
 } = require('graphql');
 
-var TODOs = [  
-  {
-    "id": 1446412739542,
-    "title": "Read emails",
-    "completed": false
-  },
-  {
-    "id": 1446412740883,
-    "title": "Buy orange",
-    "completed": true
-  }
-];
-
-let TodoType = new GraphQLObjectType({
-    name: 'todo',
+let EventType = new GraphQLObjectType({
+    name: 'event',
     fields: function() {
         return {
             id: {
                 type: GraphQLID
             },
-            title: {
+            name: {
                 type: GraphQLString
             },
-            completed: {
-                type: GraphQLBoolean
+            description: {
+                type: GraphQLString
+            },
+            event_time: {
+                type: GraphQLString
             }
         }
     }
@@ -47,25 +48,15 @@ let QueryType = new GraphQLObjectType({
     name: 'Query',
     fields: function() {
         return {
-            todos: {
-                type: new GraphQLList(TodoType),
+            events: {
+                type: new GraphQLList(EventType),
                 resolve: function() {
                     return new Promise(function(resolve, reject) {
 
-                        pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-                            resolve(TODOs);
-                            // client.query('SELECT * FROM test_table', function(err, result) {
-                            //     done();
-                            //     if (err) {
-                            //         console.error(err);
-                            //         res.send("Error " + err);
-                            //     } else {
-                            //         res.json({
-                            //             result: result.rows
-                            //         });
-                            //     }
-                            // });
-                        });
+                        pool.query('SELECT * FROM event', function(err, result) {
+                            //TODO: handle error
+                            resolve(result.rows);
+                        })
                     });
                 }
             }
