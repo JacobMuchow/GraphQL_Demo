@@ -1,8 +1,26 @@
 <html>
 <head>
     <title>GraphQL Demo</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- jQuery -->
+    <script src="/js/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $.getJSON("/api/graphql?query={events{id,name,description}}")
+                .then(function(response) {
+                    $("#response").html(JSON.stringify(response));
+                });
+        });
+    </script>
 </head>
 <body>
     <h1>It works!!</h1>
+
+    <code id="response">
+    </code>
 </body>
 </html>

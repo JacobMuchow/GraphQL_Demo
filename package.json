@@ -10,10 +10,12 @@
     "start": "node index.js"
   },
   "dependencies": {
+    "bootstrap": "^3.3.7",
     "ejs": "2.4.1",
     "express": "4.13.3",
     "express-graphql": "^0.5.4",
     "graphql": "^0.7.2",
+    "jquery": "^3.1.1",
     "pg": "^6.1.0",
     "request": "^2.78.0"
   },
