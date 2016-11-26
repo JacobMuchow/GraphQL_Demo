@@ -12,15 +12,32 @@
         $(document).ready(function() {
             $.getJSON("/api/graphql?query={events{id,name,description}}")
                 .then(function(response) {
-                    $("#response").html(JSON.stringify(response));
+                    //TODO: check errors
+
+                    var data = response.data;
+                    var events = data.events;
+
+                    for (var i = 0; i < events.length; i++) {
+                        var eventUrl = "/event?event=" + JSON.stringify(events[i]);
+
+                        $.get(eventUrl).then(function(response) {
+                            $("#content").append(response);
+                        });
+                    }
                 });
         });
     </script>
+
+    <style>
+        body {
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>It works!!</h1>
+    <h1>GraphQL Demo</h1>
 
-    <code id="response">
-    </code>
+    <div id="content">
+    </div>
 </body>
 </html>

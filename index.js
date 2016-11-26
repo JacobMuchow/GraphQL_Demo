@@ -14,8 +14,19 @@ app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 require ('./api/rest/routes.js')(app);
 require ('./api/graphql/routes.js')(app);
 
-app.get('/', function(request, response) {
-  response.render('index');
+app.get('/', function(req, res) {
+  res.render('index');
+});
+
+app.get('/event', function(req, res) {
+
+  if ('event' in req.query) {
+    var event = JSON.parse(req.query.event);
+
+    res.render('event', { event: event });
+  }
+
+  //TODO: Handle error
 });
 
 app.listen(app.get('port'), function() {
