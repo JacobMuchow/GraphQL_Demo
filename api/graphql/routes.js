@@ -13,8 +13,8 @@ pool.on('error', function(err, client) {
     console.log(err);
 });
 
-let festival = require('./festival/get.js')(pool);
-let festivals = require('./festival/getmany.js')(pool);
+let festival = require('./festival/get.js');
+let festivals = require('./festival/getmany.js');
 
 let QueryType = new graphql.GraphQLObjectType({
     name: 'Query',
@@ -32,6 +32,7 @@ let Schema = new graphql.GraphQLSchema({
 
 module.exports = function(app) {
     app.use('/api/graphql', graphqlExp({
-        schema: Schema
+        schema: Schema,
+        context: pool
     }));
 };
