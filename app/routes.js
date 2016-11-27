@@ -3,14 +3,22 @@ module.exports = function(app) {
         res.render('index');
     });
 
+    app.get('/festival', function(req, res) {
+        res.render('festival', {
+            festivalId: req.query.id
+        });
+    });
+
+    app.get('/views/festival_card', function(req, res) {
+
+        res.render('views/festival_card', {
+            festival: JSON.parse(req.query.festival)
+        });
+    });
+
     app.get('/views/event_card', function(req, res) {
-        
-        if ('event' in req.query) {
-            var event = JSON.parse(req.query.event);
-
-            res.render('views/event_card', { event: event });
-        }
-
-        //TODO: Handle error
+        res.render('views/event_card', {
+            event: JSON.parse(req.query.event)
+        });
     });
 };
