@@ -10,7 +10,6 @@ module.exports = function(app) {
     });
 
     app.get('/views/festival_card', function(req, res) {
-
         res.render('views/festival_card', {
             festival: JSON.parse(req.query.festival)
         });
