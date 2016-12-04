@@ -12,12 +12,8 @@
     <script>
         $(document).ready(function() {
             getFestival(<%= festivalId %>).then(function(response) {
-                console.log(response);
-
                 var festival = response.data.getFestival;
                 var events = festival.events;
-
-                console.log(events);
 
                 for (var i = 0; i < events.length; i++) {
                     var cardUrl = "/views/event_card?event=" + JSON.stringify(events[i]);
