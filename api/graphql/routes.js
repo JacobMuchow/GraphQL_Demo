@@ -18,6 +18,10 @@ let listFestivals = require('./festival/list.js');
 let createFestival = require('./festival/create.js');
 let deleteFestival = require('./festival/delete.js');
 
+let createEvent = require('./festival/createEvent.js');
+
+let createArtist = require('./artist/create.js');
+
 let QueryType = new gql.GraphQLObjectType({
     name: 'Query',
     fields: function() {
@@ -33,7 +37,11 @@ let MutationType = new gql.GraphQLObjectType({
     fields: function() {
         return {
             createFestival: createFestival,
-            deleteFestival: deleteFestival
+            deleteFestival: deleteFestival,
+
+            createEvent: createEvent,
+
+            createArtist: createArtist
         }
     }
 });

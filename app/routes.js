@@ -13,6 +13,10 @@ module.exports = function(app) {
         res.render('createFestival');
     });
 
+    app.get('/event/create', function(req, res) {
+        res.render('createEvent');
+    });
+
     app.get('/views/festival_card', function(req, res) {
         res.render('views/festival_card', {
             festival: JSON.parse(req.query.festival)

@@ -35,6 +35,24 @@ function deleteFestival(festivalId) {
     return makeAPIQuery(query);
 }
 
+function createArtist({name, description}) {
+    var query = `mutation {
+        createArtist(name: "${name}", description: "${description}") {
+            id
+        }
+    }`;
+    return makeAPIQuery(query);
+}
+
+function createEvent({festivalId, artistId, description, event_time}) {
+    var query = `mutation {
+        createEvent(festivalId: ${festivalId}, artistId: ${artistId}, description: "${description}", event_time: "${event_time}") {
+            id
+        }
+    }`;
+    return makeAPIQuery(query);
+}
+
 function makeAPIQuery(query) {
     var payload = {
         query: query

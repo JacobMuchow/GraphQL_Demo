@@ -13,6 +13,14 @@
         $(document).ready(function() {
             getFestival(<%= festivalId %>).then(function(response) {
                 var festival = response.data.getFestival;
+                if (!festival) {
+                    window.location.href = "/";
+                    return;
+                }
+
+                $("#title").html(festival.name);
+                $("#header").show();
+
                 var events = festival.events;
 
                 for (var i = 0; i < events.length; i++) {
@@ -33,6 +41,10 @@
                     }
                 });
             });
+
+            $("#createEvent").click(function() {
+                window.location.href = "/event/create";
+            });
         });
     </script>
 
@@ -43,7 +55,11 @@
     </style>
 </head>
 <body>
-    <h1>GraphQL Demo <button id="delete" type="button" class="btn btn-danger">Delete</button></h1>
+    <div id="header" hidden>
+        <h1><span id="title"></span> <button id="delete" type="button" class="btn btn-danger">Delete</button></h1>
+
+        <button id="createEvent" type="button" class="btn btn-primary">New Event</button>
+    </div>
 
     <div id="content">
     </div>
