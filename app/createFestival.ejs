@@ -12,11 +12,14 @@
     <script>
         $(document).ready(function() {
             $("#submit").click(function() {
-                var data = $("#createForm").serializeArray();
-                var dataRaw = JSON.stringify(data);
+                var data = {
+                    name: $("#name").val(),
+                    description: $("#description").val()
+                };
 
-                console.log(data);
-                console.log(dataRaw);
+                createFestival(data).then(function(response) {
+                    window.location.href = "/festival?id=" + response.data.createFestival.id;
+                });
             });
         });
     </script>
