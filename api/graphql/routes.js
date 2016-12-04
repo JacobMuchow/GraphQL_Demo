@@ -16,6 +16,7 @@ pool.on('error', function(err, client) {
 let festival = require('./festival/get.js');
 let festivals = require('./festival/getmany.js');
 let createFestival = require('./festival/create.js');
+let deleteFestival = require('./festival/delete.js');
 
 let QueryType = new gql.GraphQLObjectType({
     name: 'Query',
@@ -31,7 +32,8 @@ let MutationType = new gql.GraphQLObjectType({
     name: 'Mutation',
     fields: function() {
         return {
-            createFestival: createFestival
+            createFestival: createFestival,
+            deleteFestival: deleteFestival
         }
     }
 });
