@@ -3,7 +3,6 @@ function listFestivals() {
 }
 
 function getFestival(festivalId) {
-
     var query = `{
         getFestival(id: ${festivalId}) {
             id, name, description, 
@@ -15,18 +14,24 @@ function getFestival(festivalId) {
             }
         }
     }`;
-
     return makeAPIQuery(query);;
 }
 
 function createFestival({name, description}) {
-
     var query = `mutation {
         createFestival(name: "${name}", description: "${description}") {
             id, name, description
         }
     }`;
+    return makeAPIQuery(query);
+}
 
+function deleteFestival(festivalId) {
+    var query = `mutation {
+        deleteFestival(id: ${festivalId}) {
+            id
+        }
+    }`
     return makeAPIQuery(query);
 }
 

@@ -23,6 +23,16 @@
                     });
                 }
             });
+
+            $("#delete").click(function() {
+                deleteFestival(<%= festivalId %>).then(function(response) {
+                    console.log(response);
+
+                    if (response.data.deleteFestival) {
+                        window.location.href = "/";
+                    }
+                });
+            });
         });
     </script>
 
@@ -33,7 +43,7 @@
     </style>
 </head>
 <body>
-    <h1>GraphQL Demo</h1>
+    <h1>GraphQL Demo <button id="delete" type="button" class="btn btn-danger">Delete</button></h1>
 
     <div id="content">
     </div>
