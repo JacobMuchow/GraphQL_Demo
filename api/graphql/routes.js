@@ -1,6 +1,6 @@
 var pg = require('pg');
-var graphql = require('graphql');
-var graphqlExp = require('express-graphql');
+var gql = require('graphql');
+var gqlExp = require('express-graphql');
 
 var pool = new pg.Pool({
     host: process.env.DATABASE_URL,
@@ -15,8 +15,9 @@ pool.on('error', function(err, client) {
 
 let festival = require('./festival/get.js');
 let festivals = require('./festival/getmany.js');
+let createFestival = require('./festival/create.js');
 
-let QueryType = new graphql.GraphQLObjectType({
+let QueryType = new gql.GraphQLObjectType({
     name: 'Query',
     fields: function() {
         return {
@@ -26,13 +27,29 @@ let QueryType = new graphql.GraphQLObjectType({
     }
 });
 
-let Schema = new graphql.GraphQLSchema({
-    query: QueryType
+let MutationType = new gql.GraphQLObjectType({
+    name: 'Mutation',
+    fields: function() {
+        return {
+            createFestival: createFestival
+        }
+    }
+});
+
+let Schema = new gql.GraphQLSchema({
+    query: QueryType,
+    mutation: MutationType
 });
 
 module.exports = function(app) {
-    app.use('/api/graphql', graphqlExp({
+    app.use('/api/graphql', gqlExp({
         schema: Schema,
+        context: pool
+    }));
+
+    app.use('/api/graphiql', gqlExp({
+        schema: Schema,
+        graphiql: true,
         context: pool
     }));
 };

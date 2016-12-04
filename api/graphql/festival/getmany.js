@@ -6,7 +6,11 @@ module.exports = {
     resolve: function(root, args, pool) {
         return new Promise(function(resolve, reject) {
             pool.query('SELECT * FROM festival', function(err, result) {
-                resolve(result.rows);
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result.rows);
+                }
             });
         });
     }
