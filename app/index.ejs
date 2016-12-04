@@ -7,24 +7,21 @@
 
     <!-- jQuery -->
     <script src="/js/jquery.min.js"></script>
+    <script src="/js/network.js"></script>
 
     <script>
         $(document).ready(function() {
-            $.getJSON("/api/graphql?query={festivals{id,name,description}}")
-                .then(function(response) {
-                    //TODO: check errors
+            listFestivals().then(function(response) {
+                var festivals = response.data.listFestivals;
 
-                    var data = response.data;
-                    var festivals = data.festivals;
+                for (var i = 0; i < festivals.length; i++) {
+                    var cardUrl = "/views/festival_card?festival=" + JSON.stringify(festivals[i]);
 
-                    for (var i = 0; i < festivals.length; i++) {
-                        var cardUrl = "/views/festival_card?festival=" + JSON.stringify(festivals[i]);
-
-                        $.get(cardUrl).then(function(response) {
-                            $("#content").append(response);
-                        });
-                    }
-                });
+                    $.get(cardUrl).then(function(response) {
+                        $("#content").append(response);
+                    });
+                }
+            });
         });
     </script>
 

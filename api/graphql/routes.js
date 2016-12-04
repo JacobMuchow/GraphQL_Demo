@@ -13,8 +13,8 @@ pool.on('error', function(err, client) {
     console.log(err);
 });
 
-let festival = require('./festival/get.js');
-let festivals = require('./festival/getmany.js');
+let getFestival = require('./festival/get.js');
+let listFestivals = require('./festival/list.js');
 let createFestival = require('./festival/create.js');
 let deleteFestival = require('./festival/delete.js');
 
@@ -22,8 +22,8 @@ let QueryType = new gql.GraphQLObjectType({
     name: 'Query',
     fields: function() {
         return {
-            festival: festival,
-            festivals: festivals
+            getFestival: getFestival,
+            listFestivals: listFestivals
         }
     }
 });
