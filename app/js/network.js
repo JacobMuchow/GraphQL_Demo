@@ -56,7 +56,7 @@ function artistSearch(name) {
 function createArtist({name, description}) {
     var query = `mutation {
         createArtist(name: "${name}", description: "${description}") {
-            id
+            id, name, description
         }
     }`;
     return makeAPIQuery(query);
