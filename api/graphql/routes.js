@@ -20,6 +20,7 @@ let deleteFestival = require('./festival/delete.js');
 
 let createEvent = require('./festival/createEvent.js');
 
+let getArtist = require('./artist/get.js');
 let createArtist = require('./artist/create.js');
 let artistSearch = require('./artist/search.js');
 
@@ -30,6 +31,7 @@ let QueryType = new gql.GraphQLObjectType({
             getFestival: getFestival,
             listFestivals: listFestivals,
 
+            getArtist: getArtist,
             artistSearch: artistSearch
         }
     }

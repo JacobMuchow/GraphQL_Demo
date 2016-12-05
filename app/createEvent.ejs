@@ -35,14 +35,32 @@
 
                     artistSearch(name).then(function(response) {
                         var artists = response.data.artistSearch;
-
+                        var artistList = $("#artistList");
+                        
+                        var html = "";
                         for (var i = 0; i < artists.length; i++) {
                             var artist = artists[i];
-                            console.log(artist.name);
+                            html += `<li artistId="${artist.id}" class="list-group-item">${artist.name}</li>`;
                         }
+                        
+                        artistList.html(html);
+
+                        artistList.find("li").click(function() {
+                            var artistId = $(this).attr("artistId");
+
+                            getArtist(artistId).then(function(response) {
+                                var artist = response.data.getArtist;
+
+                                $("#artistName").html(artist.name);
+                                $("#artistDesc").html(artist.description);
+                            });
+                        });
                     });
                 }, 300);
+            });
 
+            $("#artistList > li").click(function() {
+                alert("click");
             });
         });
     </script>
@@ -57,6 +75,9 @@
         .form-group {
             margin-bottom: 30px;
         }
+        .list-group-item {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -65,7 +86,14 @@
     <form id="createForm" class="col-xs-12 col-md-6 col-md-offset-3" method="POST">
         <div class="form-group col-md-8 col-md-offset-2">
             <input id="artist" name="artist" type="text" class="form-control" placeholder="Arist Name">
+            <ul id="artistList" class="list-group">
+            </ul>
         </div>
     </form>
+
+    <div class="col-md-6 col-md-offset-3">
+        <h3 id="artistName" class="text-center"></h3>
+        <p id="artistDesc"></p>
+    </div>
 </body>
 </html>
