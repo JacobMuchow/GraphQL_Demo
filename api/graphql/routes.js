@@ -21,13 +21,16 @@ let deleteFestival = require('./festival/delete.js');
 let createEvent = require('./festival/createEvent.js');
 
 let createArtist = require('./artist/create.js');
+let artistSearch = require('./artist/search.js');
 
 let QueryType = new gql.GraphQLObjectType({
     name: 'Query',
     fields: function() {
         return {
             getFestival: getFestival,
-            listFestivals: listFestivals
+            listFestivals: listFestivals,
+
+            artistSearch: artistSearch
         }
     }
 });

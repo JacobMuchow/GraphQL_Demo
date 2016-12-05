@@ -11,6 +11,8 @@
 
     <script>
         $(document).ready(function() {
+            var timeoutId = null;
+
             $("#submit").click(function() {
                 var data = {
                     name: $("#name").val(),
@@ -20,6 +22,27 @@
                 createFestival(data).then(function(response) {
                     window.location.href = "/festival?id=" + response.data.createFestival.id;
                 });
+            });
+
+            $("#artist").keyup(function(e) {
+                if (timeoutId != null) {
+                    window.clearTimeout(timeoutId);
+                }
+
+                timeoutId = window.setTimeout(function() {
+                    var name = $("#artist").val();
+                    timeoutId = null;
+
+                    artistSearch(name).then(function(response) {
+                        var artists = response.data.artistSearch;
+
+                        for (var i = 0; i < artists.length; i++) {
+                            var artist = artists[i];
+                            console.log(artist.name);
+                        }
+                    });
+                }, 300);
+
             });
         });
     </script>
@@ -41,14 +64,7 @@
 
     <form id="createForm" class="col-xs-12 col-md-6 col-md-offset-3" method="POST">
         <div class="form-group col-md-8 col-md-offset-2">
-            <input id="name" name="name" type="text" class="form-control" placeholder="Name" required>
-        </div>
-        <div class="form-group col-md-12">
-            <textarea id="description" name="description" class="form-control" placeholder="Description" rows="6" required></textarea>
-        </div>
-
-        <div class="form-group col-md-6 col-md-offset-3">
-            <button id="submit" type="button" class="btn btn-primary btn-block">Submit</button>
+            <input id="artist" name="artist" type="text" class="form-control" placeholder="Arist Name">
         </div>
     </form>
 </body>
