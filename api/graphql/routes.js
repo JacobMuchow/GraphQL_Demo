@@ -2,6 +2,8 @@ var pg = require('pg');
 var gql = require('graphql');
 var gqlExp = require('express-graphql');
 
+console.log("db url: " + process.env.DATABASE_URL);
+
 //Creates a thread pool of 10 threads for R/W access to the Postgres DB
 var pool = new pg.Pool({
     host: process.env.DATABASE_URL,
