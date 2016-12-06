@@ -12,7 +12,7 @@ module.exports = {
     },
     resolve: function(root, { festivalId, artistId, description, event_time }, pool) {
         return new Promise(function(resolve, reject) {
-            pool.query('INSERT INTO event (festivalId, artistId, description, event_time) VALUES ($1, $2) RETURNING *', 
+            pool.query('INSERT INTO event (festivalId, artistId, description, event_time) VALUES ($1, $2, $3, $4) RETURNING *', 
                     [festivalId, artistId, description, event_time], function(err, result) {
                 if (err) {
                     console.log(err);

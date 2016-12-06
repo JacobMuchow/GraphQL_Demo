@@ -68,6 +68,7 @@ function createEvent({festivalId, artistId, description, event_time}) {
             id
         }
     }`;
+    console.log(query);
     return makeAPIQuery(query);
 }
 

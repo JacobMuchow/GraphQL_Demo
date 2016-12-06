@@ -12,7 +12,7 @@ module.exports = new gql.GraphQLObjectType({
                 type: new gql.GraphQLList(EventType),
                 resolve: function(root, args, pool) {
                     return new Promise(function(resolve, reject) {
-                        pool.query('SELECT * FROM event WHERE id = $1',  [root.id], function(err, result) {
+                        pool.query('SELECT * FROM event WHERE festivalId = $1 ORDER BY event_time',  [root.id], function(err, result) {
                             if (err) {
                                 console.log(err);
                                 reject(err);

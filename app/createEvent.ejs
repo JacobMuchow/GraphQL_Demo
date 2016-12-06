@@ -2,18 +2,20 @@
 <head>
     <title>Create Event</title>
 
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/jquery-ui/jquery-ui.min.css">
 
-    <!-- jQuery -->
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-
+    <!-- JS -->
+    <script src="/jquery/jquery.min.js"></script>
+    <script src="/jquery-ui/jquery-ui.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
     <script src="/js/network.js"></script>
 
     <script>
         $(document).ready(function() {
             var timeoutId = null;
+            var artistId = null;
 
             $("#submit").click(function() {
                 var data = {
@@ -35,8 +37,8 @@
                     var name = $("#artist").val();
                     timeoutId = null;
 
-                    if (name.length <= 3) {
-                        $("#artistList").css('visibility', 'hidden');
+                    if (name.length < 3) {
+                        $("#artistListContainer").hide("slow");
                         return;
                     }
 
@@ -50,7 +52,6 @@
                             html += `<li artistId="${artist.id}" class="list-group-item">${artist.name}</li>`;
                         }
                         
-                        artistList.css('visibility', 'visible');
                         artistList.html(html);
 
                         artistList.find("li").click(function() {
@@ -61,6 +62,8 @@
                                 setArtist(artist);
                             });
                         });
+
+                        $("#artistListContainer").show("slow");
                     });
                 }, 300);
             });
@@ -84,14 +87,47 @@
                 });
             });
 
-            function setArtist({id, name, description}) {
-                $("#artist").val(name);
-                $("#artistList").css('visibility', 'hidden');
+            $("#createForm").submit(function(e) {
+                e.preventDefault();
 
-                $("#artistName").html(name);
-                $("#artistDesc").html(description);
-                $("#artistContainer").attr('artistId', id).fadeIn("slow");
+                if (artistId == null) {
+                    alert("You have to choose an artist for the event!");
+                    return;
+                }
+
+                var date = $("#eventDate").val();
+                var time = $("#eventTime").val();
+                var datetime = date + " " + time + ":00";
+
+                var data = {
+                    festivalId: <%= festivalId %>,
+                    artistId: artistId,
+                    description: $("#eventDesc").val(),
+                    event_time: datetime
+                };
+
+                createEvent(data).then(function(response) {
+                    var artist = response.data.createEvent;
+                    
+                    window.location.href = "/festival?id=<%= festivalId %>";
+                });
+            });
+
+            function setArtist({id, name, description}) {
+                artistId = id;
+
+                $("#artist").val(name);
+                $("#artistListContainer").hide("fast");
             }
+
+            $("#datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                altField: "#eventDate",
+                altFormat: "yy-mm-dd"
+            });
+
+            $("#datepicker").datepicker("option", "showAnim", "slideDown");
         });
     </script>
 
@@ -105,12 +141,14 @@
         .form-group {
             margin-bottom: 30px;
         }
+        #artistListContainer {
+
+        }
         #artistList {
             max-height: 164px;
             overflow-y: auto;
             box-shadow: 5px 5px 5px #ccc;
             background: white;
-            visibility: hidden;
         }
         .list-group-item {
             cursor: pointer;
@@ -132,17 +170,31 @@
 <body>
     <h1 id="title" class="text-center">Create Event</h1>
 
-    <form id="createForm" class="col-xs-12 col-md-6 col-md-offset-3">
+    <form id="createForm" class="col-xs-12 col-md-6 col-md-offset-3" method="POST">
         <div class="form-group col-md-8 col-md-offset-2">
             <p class="link text-center" role="button" data-toggle="modal" data-target="#artistModal">Can't find your artist? Click here to add their information</p>
-            <input id="artist" name="artist" type="text" class="form-control" placeholder="Arist Name">
-            <ul id="artistList" class="list-group">
-            </ul>
+            <input id="artist" name="artist" type="text" class="form-control" placeholder="Arist Name" autocomplete="off" required> 
+            <div id="artistListContainer" hidden>
+                <ul id="artistList" class="list-group">
+                </ul>
+            </div>
         </div>
 
-        <div id="artistContainer" class="form-group col-xs-12" hidden>
-            <h3 id="artistName" class="text-center"></h3>
-            <p id="artistDesc"></p>
+        <div class="form-group">
+            <textarea id="eventDesc" class="form-control" placeholder="Description" rows="10"></textarea>
+        </div>
+
+        <div class="form-group col-xs-12 col-md-6">
+            <input id="datepicker" type="text" class="form-control" required>
+            <input id="eventDate" type="hidden" class="form-control">
+        </div>
+
+        <div class="form-group col-xs-12 col-md-6">
+            <input id="eventTime" type="time" class="form-control" required>
+        </div>
+
+        <div class="form-group col-md-6 col-md-offset-3">
+            <button id="createEvent" type="submit" class="btn btn-primary btn-lg btn-block">Save</button>
         </div>
     </form>
 

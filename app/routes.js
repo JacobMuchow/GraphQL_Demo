@@ -14,7 +14,9 @@ module.exports = function(app) {
     });
 
     app.get('/event/create', function(req, res) {
-        res.render('createEvent');
+        res.render('createEvent', {
+            festivalId: req.query.id
+        });
     });
 
     app.get('/views/festival_card', function(req, res) {
