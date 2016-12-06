@@ -8,6 +8,7 @@ module.exports = {
             //Get all festivals
             pool.query('SELECT * FROM festival', function(err, result) {
                 if (err) {
+                    console.log(err);
                     reject(err);
                 } else {
                     resolve(result.rows);

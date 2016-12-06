@@ -1,15 +1,32 @@
 var pg = require('pg');
+var url = require('url');
 var gql = require('graphql');
 var gqlExp = require('express-graphql');
 
-console.log("db url: " + process.env.DATABASE_URL);
-
 //Creates a thread pool of 10 threads for R/W access to the Postgres DB
-var pool = new pg.Pool({
-    host: process.env.DATABASE_URL,
-    max: 10,
-    idleTimeoutMillis: 1000
-});
+var config;
+if (process.env.DATABASE_URL) {
+    let params = url.parse(process.env.DATABASE_URL);
+    let auth = params.auth.split(':');
+
+    config = {
+        user: auth[0],
+        password: auth[1],
+        host: params.hostname,
+        port: params.port,
+        database: params.pathname.split('/')[1],
+        ssl: true,
+        max: 10,
+        idleTimeoutMillis: 1000
+    };
+} else {
+    config = {
+        max: 10,
+        idleTimeoutMillis: 1000
+    };
+}
+
+var pool = new pg.Pool(config);
 
 pool.on('error', function(err, client) {
     console.log(err);
