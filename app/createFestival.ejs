@@ -11,13 +11,18 @@
 
     <script>
         $(document).ready(function() {
+
+            //Create festival submit listener
             $("#submit").click(function() {
                 var data = {
                     name: $("#name").val(),
                     description: $("#description").val()
                 };
 
+                //Perform create festival
                 createFestival(data).then(function(response) {
+
+                    //Relocate to newly created festival's page
                     window.location.href = "/festival?id=" + response.data.createFestival.id;
                 });
             });
@@ -39,14 +44,20 @@
 <body>
     <h1 id="title" class="text-center">Create Festival</h1>
 
+    <!-- Festival form -->
     <form id="createForm" class="col-xs-12 col-md-6 col-md-offset-3" method="POST">
+
+        <!-- Name -->
         <div class="form-group col-md-8 col-md-offset-2">
             <input id="name" name="name" type="text" class="form-control" placeholder="Name" required>
         </div>
+
+        <!-- Description -->
         <div class="form-group col-md-12">
             <textarea id="description" name="description" class="form-control" placeholder="Description" rows="6" required></textarea>
         </div>
 
+        <!-- Submit -->
         <div class="form-group col-md-6 col-md-offset-3">
             <button id="submit" type="button" class="btn btn-primary btn-block">Submit</button>
         </div>

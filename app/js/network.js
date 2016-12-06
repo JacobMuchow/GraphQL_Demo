@@ -1,3 +1,14 @@
+/**
+ * This is my networking layer, if you will, for the client application.
+ * makeAPIQuery() makes an async POST request using JQuery to the graphql
+ * API with the query given.
+ * 
+ * I created functions for each enpoint to keep my page files neat.
+ * If I added any more endpoints, I would probably have to rethink how 
+ * this is structured. I got into the architecture a little more with 
+ * GraphQL, but that is what I was most interested in for this project. 
+ * The frontend stuff is mostly a demo.
+ */
 function listFestivals() {
     return makeAPIQuery("{listFestivals{id,name,description}}");
 }
@@ -68,7 +79,6 @@ function createEvent({festivalId, artistId, description, event_time}) {
             id
         }
     }`;
-    console.log(query);
     return makeAPIQuery(query);
 }
 

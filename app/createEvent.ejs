@@ -17,35 +17,29 @@
             var timeoutId = null;
             var artistId = null;
 
-            $("#submit").click(function() {
-                var data = {
-                    name: $("#name").val(),
-                    description: $("#description").val()
-                };
-
-                createFestival(data).then(function(response) {
-                    window.location.href = "/festival?id=" + response.data.createFestival.id;
-                });
-            });
-
+            //Artist search input listener
             $("#artist").keyup(function(e) {
                 if (timeoutId != null) {
                     window.clearTimeout(timeoutId);
                 }
 
+                //Attempt a search if user hasn't pressed a key in 300 ms
                 timeoutId = window.setTimeout(function() {
                     var name = $("#artist").val();
                     timeoutId = null;
 
+                    //Search only if >= 3 characters
                     if (name.length < 3) {
                         $("#artistListContainer").hide("slow");
                         return;
                     }
 
+                    //Perform search
                     artistSearch(name).then(function(response) {
                         var artists = response.data.artistSearch;
                         var artistList = $("#artistList");
                         
+                        //Create results list in HTML
                         var html = "";
                         for (var i = 0; i < artists.length; i++) {
                             var artist = artists[i];
@@ -54,9 +48,12 @@
                         
                         artistList.html(html);
 
+                        //List for clicks on an option
                         artistList.find("li").click(function() {
                             var artistId = $(this).attr("artistId");
 
+                            //Get artist info, set. Not necessary at the moment, but useful
+                            //if we want to show the artist info here in the future
                             getArtist(artistId).then(function(response) {
                                 var artist = response.data.getArtist;
                                 setArtist(artist);
@@ -68,17 +65,21 @@
                 }, 300);
             });
 
+            //Modal form submit listener
             $("#artistFormSubmit").click(function() {
                 var data = {
                     name: $("#artistFormName").val(),
                     description: $("#artistFormDesc").val()
                 };
 
+                //Perform create artist
                 createArtist(data).then(function(response) {
                     var artist = response.data.createArtist;
 
                     var modal = $("#artistModal");
 
+                    //Originally intended to show artist info, but I removed 
+                    //it because the CSS too complex to finish for this project
                     modal.on('hidden.bs.modal', function() {
                         setArtist(artist);
                     });
@@ -87,6 +88,7 @@
                 });
             });
 
+            //Create event form submit listener
             $("#createForm").submit(function(e) {
                 e.preventDefault();
 
@@ -95,6 +97,7 @@
                     return;
                 }
 
+                //Format event date/time data for databse
                 var date = $("#eventDate").val();
                 var time = $("#eventTime").val();
                 var datetime = date + " " + time + ":00";
@@ -106,13 +109,17 @@
                     event_time: datetime
                 };
 
+                //Perform create event
                 createEvent(data).then(function(response) {
                     var artist = response.data.createEvent;
                     
+                    //Relocate to the festival page (maybe go to event page in future)
                     window.location.href = "/festival?id=<%= festivalId %>";
                 });
             });
 
+            //Was going to show some UI for the artist here, but removed it
+            //because it was getting to copmlex and I needed to finish
             function setArtist({id, name, description}) {
                 artistId = id;
 
@@ -120,6 +127,7 @@
                 $("#artistListContainer").hide("fast");
             }
 
+            //Fancy JQuery UI datepicker :)
             $("#datepicker").datepicker({
                 changeMonth: true,
                 changeYear: true,
@@ -170,7 +178,10 @@
 <body>
     <h1 id="title" class="text-center">Create Event</h1>
 
+    <!-- Event form -->
     <form id="createForm" class="col-xs-12 col-md-6 col-md-offset-3" method="POST">
+
+        <!-- Artist create / search -->
         <div class="form-group col-md-8 col-md-offset-2">
             <p class="link text-center" role="button" data-toggle="modal" data-target="#artistModal">Can't find your artist? Click here to add their information</p>
             <input id="artist" name="artist" type="text" class="form-control" placeholder="Arist Name" autocomplete="off" required> 
@@ -180,19 +191,23 @@
             </div>
         </div>
 
+        <!-- Description -->
         <div class="form-group">
             <textarea id="eventDesc" class="form-control" placeholder="Description" rows="10"></textarea>
         </div>
-
+ 
+        <!-- Date -->
         <div class="form-group col-xs-12 col-md-6">
             <input id="datepicker" type="text" class="form-control" required>
             <input id="eventDate" type="hidden" class="form-control">
         </div>
 
+        <!-- Time -->
         <div class="form-group col-xs-12 col-md-6">
             <input id="eventTime" type="time" class="form-control" required>
         </div>
 
+        <!-- Save button -->
         <div class="form-group col-md-6 col-md-offset-3">
             <button id="createEvent" type="submit" class="btn btn-primary btn-lg btn-block">Save</button>
         </div>
@@ -208,10 +223,13 @@
                 </div>
                 <div class="modal-body">
                     <form id="artistForm">
+                    
+                        <!-- Artist name -->
                         <div class="form-group">
                             <input id="artistFormName" type="text" class="form-control" placeholder="Name">
                         </div>
 
+                        <!-- Artist description -->
                         <div class="form-group">
                             <textarea id="artistFormDesc" class="form-control" placeholder="Description" rows="6"></textarea>
                         </div>

@@ -1,5 +1,5 @@
 var gql = require ('graphql');
-var FestivalType = require('./FestivalType.js');
+var FestivalType = require('./../types/FestivalType.js');
 
 module.exports = {
     type: FestivalType,
@@ -8,6 +8,7 @@ module.exports = {
     },
     resolve: function(root, { id }, pool) {
         return new Promise(function(resolve, reject) {
+            //Delete specified festival
             pool.query('DELETE FROM festival WHERE id = $1 RETURNING *', [id], function(err, result) {
                 if (err) {
                     console.log(err);

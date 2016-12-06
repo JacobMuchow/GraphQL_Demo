@@ -11,9 +11,12 @@
 
     <script>
         $(document).ready(function() {
+
+            //List festivals async
             listFestivals().then(function(response) {
                 var festivals = response.data.listFestivals;
 
+                //Show list of festival cards
                 for (var i = 0; i < festivals.length; i++) {
                     var cardUrl = "/views/festival_card?festival=" + JSON.stringify(festivals[i]);
 
@@ -23,6 +26,7 @@
                 }
             });
 
+            //Create festival click listener
             $("#create").click(function() {
                 window.location.href = "/festival/create/";
             });

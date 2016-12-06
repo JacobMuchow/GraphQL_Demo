@@ -8,6 +8,7 @@ module.exports = {
     },
     resolve: function(root, { id }, pool) {
         return new Promise(function(resolve, reject) {
+            //Get data for the specified artist
             pool.query('SELECT * FROM artist WHERE id = $1', [id], function(err, result) {
                 if (err) {
                     console.log(err);

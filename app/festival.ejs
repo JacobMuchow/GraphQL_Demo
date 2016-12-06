@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>RootsNBlues</title>
+    <title>Festival</title>
 
     <!-- CSS -->
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
@@ -11,6 +11,8 @@
 
     <script>
         $(document).ready(function() {
+
+            //Get festival async (didn't want to mess with this in Node.js for this project)
             getFestival(<%= festivalId %>).then(function(response) {
                 var festival = response.data.getFestival;
                 if (!festival) {
@@ -18,11 +20,13 @@
                     return;
                 }
 
+                //Set up views with festival data
                 $("#title").html(festival.name);
                 $("#header").show();
 
                 var events = festival.events;
 
+                //Show list of event cards
                 for (var i = 0; i < events.length; i++) {
                     var cardUrl = "/views/event_card?event=" + JSON.stringify(events[i]);
 
@@ -32,16 +36,16 @@
                 }
             });
 
+            //Delete button click listener
             $("#delete").click(function() {
                 deleteFestival(<%= festivalId %>).then(function(response) {
-                    console.log(response);
-
                     if (response.data.deleteFestival) {
                         window.location.href = "/";
                     }
                 });
             });
 
+            //Create event click listener
             $("#createEvent").click(function() {
                 window.location.href = "/event/create?id=<%= festivalId %>";
             });

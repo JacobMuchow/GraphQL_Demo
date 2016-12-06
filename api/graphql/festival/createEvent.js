@@ -1,5 +1,5 @@
 var gql = require ('graphql');
-var FestivalType = require('./FestivalType.js');
+var FestivalType = require('./../types/FestivalType.js');
 var EventType = require('./../types/EventType.js');
 
 module.exports = {
@@ -12,6 +12,7 @@ module.exports = {
     },
     resolve: function(root, { festivalId, artistId, description, event_time }, pool) {
         return new Promise(function(resolve, reject) {
+            //Create event for specified festival with given data
             pool.query('INSERT INTO event (festivalId, artistId, description, event_time) VALUES ($1, $2, $3, $4) RETURNING *', 
                     [festivalId, artistId, description, event_time], function(err, result) {
                 if (err) {

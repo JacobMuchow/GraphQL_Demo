@@ -1,5 +1,5 @@
 var gql = require ('graphql');
-var FestivalType = require('./FestivalType');
+var FestivalType = require('./../types/FestivalType.js');
 
 module.exports = {
     type: FestivalType,
@@ -8,8 +8,14 @@ module.exports = {
     },
     resolve: function(root, { id }, pool) {
         return new Promise(function(resolve, reject) {
+            //Get data for specified festival
             pool.query('SELECT * FROM festival WHERE id = $1', [id], function(err, result) {
-                resolve(result.rows[0]);
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                } else {
+                    resolve(result.rows[0]);
+                }
             });
         });
     }

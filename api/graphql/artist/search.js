@@ -8,6 +8,7 @@ module.exports = {
     },
     resolve: function(root, { name }, pool) {
         return new Promise(function(resolve, reject) {
+            //Search for artists matching the chunck of the name given
             filter = "%" + name + "%";
             pool.query('SELECT * FROM artist WHERE name LIKE $1', [filter], function(err, result) {
                 if (err) {
